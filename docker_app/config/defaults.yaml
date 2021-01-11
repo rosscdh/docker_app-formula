@@ -1,0 +1,20 @@
+docker_app:
+  app:
+    name: my-app
+    location: /opt/my-app
+
+  limit_nofile: 65536
+
+  cmd:
+    start: docker-compose up
+    stop: docker-compose stop
+
+  env:
+    ENV_VAR: value
+
+  docker_compose_yaml: |-
+  version: '3'
+  services:
+    hello_world:
+      image: alpine
+      command: [/bin/echo, 'Hello world']

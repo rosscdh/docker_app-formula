@@ -1,0 +1,2 @@
+{% import_yaml 'docker_app/config/defaults.yaml' as preconfig %}
+{% set config = salt.pillar.get( 'docker_app', default=preconfig.docker_app, merge=True ) %}

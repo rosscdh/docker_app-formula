@@ -1,0 +1,4 @@
+{%- from "docker_app/map.jinja" import config with context %}
+{%- for key, value in config.env.items() %}
+{{ key }}={{ value }}
+{%- endfor %}
