@@ -1,15 +1,15 @@
 [Unit]
-Description={{ app.name }}
+Description={{ app.get('name') }}
 Wants=network-online.target
 After=network-online.target docker.socket firewalld.service
 Requires=docker.socket
 
 [Service]
-WorkingDirectory={{ app.location }}
+WorkingDirectory={{ app.get('location') }}
 
-EnvironmentFile={{ app.location }}/.env
-ExecStart={{ config.cmd.start }}
-ExecStop={{ config.cmd.stop }}
+EnvironmentFile={{ app.get('location') }}/.env
+ExecStart={{ app_config.get('cmd').get('start') }}
+ExecStop={{ app_config.get('cmd').get('stop') }}
 
 # Let systemd restart this service always
 Restart=on-failure
@@ -18,7 +18,7 @@ StartLimitBurst=3
 StartLimitInterval=60s
 
 # Specifies the maximum file descriptor number that can be opened by this process
-LimitNOFILE={{ config.limit_nofile }}
+LimitNOFILE={{ app_config.get('limit_nofile') }}
 
 # Disable timeout logic and wait until process is stopped
 TimeoutStopSec=infinity
