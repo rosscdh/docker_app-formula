@@ -1,14 +1,13 @@
-{%- from "docker_app/map.jinja" import config with context %}
 [Unit]
-Description={{ config.app.name }}
+Description={{ app.name }}
 Wants=network-online.target
 After=network-online.target docker.socket firewalld.service
 Requires=docker.socket
 
 [Service]
-WorkingDirectory={{ config.app.location }}
+WorkingDirectory={{ app.location }}
 
-EnvironmentFile={{ config.app.location }}/.env
+EnvironmentFile={{ app.location }}/.env
 ExecStart={{ config.cmd.start }}
 ExecStop={{ config.cmd.stop }}
 
