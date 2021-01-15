@@ -3,6 +3,10 @@ docker_app:
     - name: hello-world
       location: /opt/hello-world
 
+  networks:
+    - name: hello-world
+      state: present
+
   hello-world:
     limit_nofile: 65536
 
@@ -10,13 +14,24 @@ docker_app:
       start: docker-compose up
       stop: docker-compose stop
 
+    supporting_files:
+      - name: filename.conf
+        #location: /custom/location # if not specified will use the app.location + file.name
+        mode: 744 # default 744
+        contents: |
+          stuff here
+
     env:
       ENV_VAR: value
       ENV_VAR_B: value_b
 
-    docker_compose_yaml: |-
-    version: '3'
-    services:
-      hello_world:
-        image: alpine
-        command: [/bin/echo, 'Hello world']
+    docker_compose_yaml: |
+      version: '3'
+      networks:
+        default:
+          external:
+            name: hello-world
+      services:
+        hello_world:
+          image: alpine
+          command: [/bin/echo, 'Hello world']
