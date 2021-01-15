@@ -68,7 +68,7 @@ docker_network_{{ nw.name }}:
 # Supporting files
 #
 {%- for file in app.supporting_files | default([]) %}
-{%- set default_file_name = app.location ~ file.name %}
+{%- set default_file_name = app.location ~ "/" ~ file.name %}
 {{ app.name }}_{{ file.name }}:
   file.managed:
   # use location if specified otherwise the default location + name
