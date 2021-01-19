@@ -19,7 +19,7 @@ StartLimitBurst=3
 StartLimitInterval=60s
 
 # Specifies the maximum file descriptor number that can be opened by this process
-LimitNOFILE={{ app_config.get('limit_nofile') }}
+LimitNOFILE={{ app_config.get('limit_nofile', '65536') }}
 
 # Disable timeout logic and wait until process is stopped
 TimeoutStopSec=infinity

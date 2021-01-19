@@ -59,7 +59,8 @@ docker_network_{{ nw.name }}:
 {{ app.name }}:
   service.running:
     - enable: True
-    - reload: True
+    - force: True
+    - full_restart: True
     - watch:
       - file: /etc/systemd/system/{{ app.name }}.service
       - file: {{ app.location }}/docker-compose.yml
