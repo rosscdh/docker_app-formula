@@ -30,7 +30,7 @@ docker_network_{{ nw.name }}:
 #
 # Supporting files
 #
-{%- set app_config = pillar.get('docker_prometheus').get(app.name) %}
+{%- set app_config = pillar.get('docker_app').get(app.name) %}
 {%- for file in app_config.supporting_files | default([]) %}
 {%- set default_file_name = app.location ~ "/" ~ file.name %}
 {{ app.name }}_{{ file.name }}:
@@ -40,8 +40,8 @@ docker_network_{{ nw.name }}:
   - replace: True
   - makedirs: True
   - mode: {{ file.mode | default(744) }}
-  - contents: |
-      {{ file.get("contents") }}
+  - template: jinja
+  - contents_pillar: docker_app:{{ app.name }}:supporting_files:{{ rowloop.index }}:contents
 {% endfor %}
 
 
