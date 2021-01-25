@@ -41,7 +41,7 @@ docker_network_{{ nw.name }}:
   - makedirs: True
   - mode: {{ file.mode | default(744) }}
   - contents: |
-      {{ file.contents }}
+      {{ file.get("contents") }}
 {% endfor %}
 
 
