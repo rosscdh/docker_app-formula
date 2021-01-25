@@ -41,7 +41,7 @@ docker_network_{{ nw.name }}:
   - makedirs: True
   - mode: {{ file.mode | default(744) }}
   - template: jinja
-  - contents_pillar: docker_app:{{ app.name }}:supporting_files:{{ rowloop.index }}:contents
+  - contents_pillar: docker_app:{{ app.name }}:supporting_files:{{ loop.index }}:contents
 {% endfor %}
 
 
