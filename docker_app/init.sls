@@ -27,6 +27,26 @@ docker_network_{{ nw.name }}:
 {%- endfor %}
 
 {%- for app in config.apps %}
+#
+# Supporting files
+#
+{%- for file in app.supporting_files | default([]) %}
+{%- set default_file_name = app.location ~ "/" ~ file.name %}
+{{ app.name }}_{{ file.name }}:
+  file.managed:
+  # use location if specified otherwise the default location + name
+  - name: {{ file.location | default( default_file_name ) }}
+  - replace: True
+  - makedirs: True
+  - mode: {{ file.mode | default(744) }}
+  - contents: |
+      {{ file.contents }}
+{% endfor %}
+
+
+#
+# Primary
+#
 {{ app.location }}/docker-compose.yml:
   file.managed:
   - template: jinja
@@ -65,19 +85,4 @@ docker_network_{{ nw.name }}:
       - file: /etc/systemd/system/{{ app.name }}.service
       - file: {{ app.location }}/docker-compose.yml
       - file: {{ app.location }}/.env
-#
-# Supporting files
-#
-{%- for file in app.supporting_files | default([]) %}
-{%- set default_file_name = app.location ~ "/" ~ file.name %}
-{{ app.name }}_{{ file.name }}:
-  file.managed:
-  # use location if specified otherwise the default location + name
-  - name: {{ file.location | default( default_file_name ) }}
-  - replace: True
-  - makedirs: True
-  - mode: {{ file.mode | default(744) }}
-  - contents: |
-      {{ file.contents }}
-{% endfor %}
 {%- endfor %}
