@@ -30,7 +30,8 @@ docker_network_{{ nw.name }}:
 #
 # Supporting files
 #
-{%- for file in app.supporting_files | default([]) %}
+{%- set app_config = pillar.get('docker_prometheus').get(app.name) %}
+{%- for file in app_config.supporting_files | default([]) %}
 {%- set default_file_name = app.location ~ "/" ~ file.name %}
 {{ app.name }}_{{ file.name }}:
   file.managed:
