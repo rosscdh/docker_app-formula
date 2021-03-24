@@ -3,7 +3,7 @@
 Description={{ app.get('name') }}
 Wants=network-online.target
 After=network-online.target docker.socket firewalld.service
-Requires=docker.socket
+#Requires=docker.socket
 
 [Service]
 WorkingDirectory={{ app.get('location') }}
